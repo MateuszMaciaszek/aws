@@ -1,0 +1,45 @@
+---
+- hosts: wordpress
+  become: yes
+  tasks:
+    - name: "Install dev dep"
+      yum: name={{item}}
+      with_items:
+         - gcc
+    - name: "remove prev apache"
+      yum: name={{item}} state=absent
+      with_items:
+        - httpd
+        - httpd-tools
+    - yum: name={{item}} state=latest
+      with_items:
+        - httpd24
+        - httpd24-tools
+    - name: "install php version"
+      yum: name={{item}} state=latest 
+      with_items:
+        - php56
+        - php56-mysqlnd
+    - name: "Copy Apache configuration"
+      template: src=templates/apache-vhost.conf.j2 dest=/etc/httpd/conf.d/wordpress.conf
+    - name: "restart Apache"
+      service: name=httpd state=restarted
+    - name: "MySQL installation"
+      yum: name={{item}} state=latest
+      with_items:
+         - mysql56-server
+         - mysql56-devel
+    - name: "Install python extra depe"
+      pip: name=MySQL-python
+    - name: "Restart MySQL"
+      service: name=mysqld state=restarted
+    - name: "create database"
+      mysql_db: name=wordpress state=present
+    - mysql_user: name=wordpress password=wordpress priv=wordpress.*:ALL host=localhost state=present 
+    - name: "Download wordpress"
+      get_url:
+        url: https://wordpress.org/latest.tar.gz
+        dest: /tmp/wordpress.tar.gz
+    - name: "unzip"
+      unarchive: src=/tmp/wordpress.tar.gz dest=/var/www/ copy=no
+    
