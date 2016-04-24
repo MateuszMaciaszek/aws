@@ -1,0 +1,5 @@
+---
+wp_install_path: "/var/www/wordpress"
+wp_db_name: "wordpress" 
+wp_db_pass: "wordpress"
+wp_db_user: "wordpress"

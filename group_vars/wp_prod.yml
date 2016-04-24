@@ -1,0 +1,5 @@
+---
+wp_install_path: "/var/www/wordpress"
+wp_db_name: "wp_prod"
+wp_db_pass: "123qwe"
+wp_db_user: "user"

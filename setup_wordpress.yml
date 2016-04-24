@@ -1,5 +1,5 @@
 ---
-- hosts: wordpress
+- hosts: all
   become: yes
   tasks:
     - name: "Install dev dep"
@@ -34,8 +34,8 @@
     - name: "Restart MySQL"
       service: name=mysqld state=restarted
     - name: "create database"
-      mysql_db: name=wordpress state=present
-    - mysql_user: name=wordpress password=wordpress priv=wordpress.*:ALL host=localhost state=present 
+      mysql_db: name={{wp_db_name}} state=present
+    - mysql_user: name={{wp_db_user}} password={{wp_db_pass}} priv={{wp_db_name}}.*:ALL host=localhost state=present 
     - name: "Download wordpress"
       get_url:
         url: https://wordpress.org/latest.tar.gz
@@ -43,4 +43,4 @@
     - name: "unzip"
       unarchive: src=/tmp/wordpress.tar.gz dest=/var/www/ copy=no
     - name: "Copy Wordpress Conf"
-      template: src=templates/wp-config.php.j2 dest=/var/www/wordpress/wp-config.php
+      template: src=templates/wp-config.php.j2 dest={{wp_install_path}}/wp-config.php
