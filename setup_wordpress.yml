@@ -23,7 +23,7 @@
     - name: "Copy Apache configuration"
       template: src=templates/apache-vhost.conf.j2 dest=/etc/httpd/conf.d/wordpress.conf
     - name: "restart Apache"
-      service: name=httpd24 state=restarted
+      service: name=httpd state=restarted
     - name: "MySQL installation"
       yum: name={{item}} state=latest
       with_items:
