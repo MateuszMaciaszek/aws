@@ -27,10 +27,14 @@
     - name: "MySQL installation"
       yum: name={{item}} state=latest
       with_items:
-         - mysql57-server
-         - mysql57-devel
+         - mysql56-server
+         - mysql56-devel
     - name: "Install python extra depe"
       pip: name=MySQL-python
+    - name: Ensure MySQL Python libraries are installed.
+      yum:
+        name: MySQL-python27
+        state: present
     - name: "Restart MySQL"
       service: name=mysqld state=restarted
     - name: "create database"
