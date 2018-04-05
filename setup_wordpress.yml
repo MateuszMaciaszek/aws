@@ -18,8 +18,8 @@
     - name: "install php version"
       yum: name={{item}} state=latest 
       with_items:
-        - php56
-        - php56-mysqlnd
+        - php71
+        - php71-mysqlnd
     - name: "Copy Apache configuration"
       template: src=templates/apache-vhost.conf.j2 dest=/etc/httpd/conf.d/wordpress.conf
     - name: "restart Apache"
@@ -27,8 +27,8 @@
     - name: "MySQL installation"
       yum: name={{item}} state=latest
       with_items:
-         - mysql56-server
-         - mysql56-devel
+         - mysql57-server
+         - mysql57-devel
     - name: "Install python extra depe"
       pip: name=MySQL-python
     - name: "Restart MySQL"
